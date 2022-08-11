@@ -1,4 +1,7 @@
-FROM golang:lastest as builder
+############################
+# STEP 1 build executable binary
+############################
+FROM golang:1.18 AS builder
 
 
 WORKDIR /app
@@ -10,5 +13,15 @@ RUN go mod download
 
 COPY . .
 
-RUN go build cmd/api/main.go
+RUN  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o api
 
+
+############################
+# STEP 2 build a small image
+############################
+FROM scratch AS runner
+
+COPY --from=builder /app/api /api
+COPY config.yaml /config.yaml
+
+ENTRYPOINT ["/api"]

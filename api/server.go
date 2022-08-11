@@ -5,10 +5,12 @@ import (
 	"fmt"
 
 	"github.com/labstack/echo/v4"
+	"github.com/vmickus/go-hexagonal-api/internal/service"
 )
 
 type Server struct {
-	Router *echo.Echo
+	Router      *echo.Echo
+	PostService *service.PostService
 }
 
 func NewServer() *Server {
@@ -16,6 +18,11 @@ func NewServer() *Server {
 	return &Server{
 		Router: e,
 	}
+}
+
+func (s *Server) WithPostService(svc *service.PostService) *Server {
+	s.PostService = svc
+	return s
 }
 
 func (s *Server) LogRoutes() error {

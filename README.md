@@ -14,6 +14,12 @@ We are creating a TODO API app that can:
 - DELETE one TODO item
 
 
+## Execute
+
+```bash
+docker build -t go-hex-api . && docker run -it -p 8080:8080 go-hex-api
+```
+
 
 ## References
 
